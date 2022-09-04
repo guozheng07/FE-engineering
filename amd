@@ -16,11 +16,20 @@
     }
   });
   require(['lodash', 'foo'], function(_, foo)) {
-  
+    document.getElementById('shuffle').innerHTML = _.shuffle([1,2,3,4,5]).join('~~'); // 洗牌
+    document.getElementById('compact').innerHTML = foo.print();
   }
 </script>
 
 // js/libs/foo.js
+define('foo', ['lodash'], function(_) {
+  return {
+    print: function() {
+      const arr = [1,2,3,4,,,,,,5,6];
+      return _.compact(arr).join('--');
+    }
+  }
+})
 
 // js/require.js
 // 用户不一定只配置了一个 config，要先收集依赖
@@ -43,7 +52,7 @@ var define = (name, deps, handler) => {
 const _import = (url) => new Promise((resolve, reject) => System.import(url).then(resolve, reject));
 
 // foo -- foo.js -- localhost/xxx/xxx/js/libs/foo.js
-const _getUrl = (dep) => location.pathname.slice(0, location.pathname.lastIndexOf('./')) + '/js/libs' + dep + 
+const _getUrl = (dep) => location.pathname.slice(0, location.pathname.lastIndexOf('./')) + '/js/libs/' + dep + '.js';
 const _load = (url) => {
   return new Promise((resolve, reject) => {
     const head = document.getElementsByTagName('head')[0];
