@@ -4,13 +4,27 @@
 // 1.用户不一定收集
 var require = {};
 
-var define = () => {
-
+var define = (name, deps, handler) => {
+  globalDeps(name) = { deps, handler }
 };
 
-require = () => {
+const _import = (url) => new Promise((resolve, reject) => System.import(url).then(resolve, reject));
 
-};
+// foo -- foo.js -- localhost/xxx/xxx/js/libs/foo.js
+const _getUrl = (dep) => location.pathname.slice(0, location.pathname.lastIndexOf('./')) + '/js/libs' + dep + 
+const _load = (url) => {
+  return new Promise((resolve, reject) => {
+    const head = document.getElementsByTagName('head')[0];
+    const script = document.createElement('script');
+    
+    
+  })
+}
+require = (deps, handler) => Promise.all(deps.map(dep) = > {
+  // 如果 CDN 有
+  
 
-require.config = (options) => Object.assign();
+})).then(arr => handler(...arr));
+
+require.config = (options) => Object.assign(globalOptions, options);
 ```
