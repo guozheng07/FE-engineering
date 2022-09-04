@@ -1,11 +1,43 @@
 ```
-// require.js
+// index.html
+<head>
+  <script src="./js/require.js"></script>
+</head>
+<body>
+  <div id="root">
+    <div id="shuffle"></div>
+    <div id="compact"></div>
+  </div>
+</body>
+<script>
+  require.config({
+    paths: {
+      lodash: 'https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.min.js'
+    }
+  });
+  require(['lodash', 'foo'], function(_, foo)) {
+  
+  }
+</script>
 
-// 1.用户不一定收集
+// js/libs/foo.js
+
+// js/require.js
+// 用户不一定只配置了一个 config，要先收集依赖
+const globalOptions = {
+  path: {
+  
+  }
+};
+
+const globalDeps = {
+
+};
+
 var require = {};
 
 var define = (name, deps, handler) => {
-  globalDeps(name) = { deps, handler }
+  globalDeps[name] = { deps, handler }
 };
 
 const _import = (url) => new Promise((resolve, reject) => System.import(url).then(resolve, reject));
@@ -18,18 +50,19 @@ const _load = (url) => {
     const script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = url;
-    sxript.onload = resolve;
+    script.onload = resolve;
     script.onerror = reject;
-    
-    
-    
+    head.appendChild(script);
   })
 }
 require = (deps, handler) => Promise.all(deps.map(dep) = > {
   // 如果 CDN 有
-  if(globalOptions.paths[dep])
-  
-
+  if(globalOptions.paths[dep]) return _import(globalOptions.paths[dep]);
+  return _load(_getUrl(dep)).then(() => {
+    const { deps, handler } = globalDeps[dep];
+    if(!deps.length) return handler(); // 没有依赖，直接执行
+    return require(deps, handler);
+  })  
 })).then(arr => handler(...arr));
 
 require.config = (options) => Object.assign(globalOptions, options);
