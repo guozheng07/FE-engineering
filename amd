@@ -1,0 +1,16 @@
+```
+// require.js
+
+// 1.用户不一定收集
+var require = {};
+
+var define = () => {
+
+};
+
+require = () => {
+
+};
+
+require.config = (options) => Object.assign();
+```
