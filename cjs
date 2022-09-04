@@ -1,6 +1,8 @@
 ```
-// index.js
-// 
+// module.js
+module.exports = function() {
+  return 'hello world';
+}
 
 // require.js
 const { readFileSync } = require('fs');
